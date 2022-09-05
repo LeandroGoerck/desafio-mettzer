@@ -1,8 +1,8 @@
 import React from "react";
-import { MagnifyingGlass } from "phosphor-react";
+import { MagnifyingGlass, SpinnerGap } from "phosphor-react";
 
 export default function SearchBar(props) {
-  const { searchInput, handleChanges, handleSearchButton } = props;
+  const { isLoading, searchInput, handleChanges, handleSearchButton } = props;
   return (
     <div className="h-20 w-full flex flex-row p-4">
       <div className="h-full w-full flex flex-col justify-center bg-[#F5F5F5]">
@@ -20,7 +20,11 @@ export default function SearchBar(props) {
             className="h-12 w-12 flex flex-row justify-center items-center rounded-sm bg-[#B7540A]"
             type="submit"
             onClick={(e) => handleSearchButton(e)}>
-            <MagnifyingGlass className="text-white" weight="bold" size={32} />
+            {isLoading ? (
+              <SpinnerGap className="animate-spin text-white" size={32} weight="bold" />
+            ) : (
+              <MagnifyingGlass className="text-white" weight="bold" size={32} />
+            )}
           </button>
         </form>
       </div>
