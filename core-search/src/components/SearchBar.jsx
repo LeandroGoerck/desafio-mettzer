@@ -6,7 +6,7 @@ export default function SearchBar(props) {
   return (
     <div className="h-20 w-full flex flex-row p-4">
       <div className="h-full w-full flex flex-col justify-center bg-[#F5F5F5]">
-        <div className="h-full flex flex-row justify-center">
+        <form className="h-full flex flex-row justify-center">
           <input
             title="O que você está buscando?"
             type="text"
@@ -17,12 +17,12 @@ export default function SearchBar(props) {
             className="h-full w-full rounded-sm pl-1 border"
           />
           <button
-            className="h-12 w-12 flex flex-row justify-center items-center rounded-sm bg-[#B7540A] "
-            type="button"
-            onClick={handleSearchButton}>
+            className="h-12 w-12 flex flex-row justify-center items-center rounded-sm bg-[#B7540A]"
+            type="submit"
+            onClick={(e) => handleSearchButton(e)}>
             <MagnifyingGlass className="text-white" weight="bold" size={32} />
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
