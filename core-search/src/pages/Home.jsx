@@ -19,7 +19,8 @@ export default function Home() {
     }));
   };
 
-  const handleSearchButton = () => {
+  const handleSearchButton = (e) => {
+    e.preventDefault();
     api
       .get(
         `/search/${form.searchInput}?page=1&pageSize=10&apiKey=${process.env.REACT_APP_API_KEY}`
@@ -27,15 +28,21 @@ export default function Home() {
       .then((data) => {
         console.log(data.data.data);
         setArticles(
-          data.data.data.map((data) => ({
-            id: data._id,
-            authors: `${data._source.authors}`.substring(0, 100) + "...",
-            type: data._type,
-            description:
-              `${data._source.description}`.substring(0, 200) + "...",
-            title: data._source.title,
-            urls: data._source.urls,
-          }))
+          data.data.data.map((data) => {
+            if (data.description !== null) {
+              return {
+                id: data._id,
+                authors: `${data._source.authors}`.substring(0, 100) + "...",
+                type: data._type,
+                description:
+                  `${data._source.description}`.substring(0, 200) + "...",
+                title: data._source.title,
+                urls: `${data._source.urls}`.substring(0,100) + "...",
+              };
+            } else {
+              return false;
+            }
+          })
         );
         // setArticles(data.data)
       });
