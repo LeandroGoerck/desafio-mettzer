@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 
 import NavBar from "../components/NavBar";
+import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import api from "../helpers/request";
 
 export default function Home() {
-  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [outputs, setOutputs] = useState([]);
+  const [totalHits, setTotalHits] = useState(0);
   const [form, setFormValue] = useState({
     searchInput: "",
+    page: 1,
   });
 
   const handleChanges = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
 
     setFormValue((prevState) => ({
       ...prevState,
@@ -21,13 +25,15 @@ export default function Home() {
 
   const handleSearchButton = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     api
       .get(
-        `/search/${form.searchInput}?page=1&pageSize=10&apiKey=${process.env.REACT_APP_API_KEY}`
+        `/search/${form.searchInput}?page=${form.page}&pageSize=10&apiKey=${process.env.REACT_APP_API_KEY}`
       )
       .then((data) => {
-        console.log(data.data.data);
-        setArticles(
+        console.log(data.data);
+        setTotalHits(data.data.totalHits);
+        setOutputs(
           data.data.data.map((data) => {
             if (data.description !== null) {
               return {
@@ -37,13 +43,14 @@ export default function Home() {
                 description:
                   `${data._source.description}`.substring(0, 200) + "...",
                 title: data._source.title,
-                urls: `${data._source.urls}`.substring(0,100) + "...",
+                urls: `${data._source.urls}`.substring(0, 100) + "...",
               };
             } else {
               return false;
             }
           })
         );
+        setIsLoading(false);
         // setArticles(data.data)
       });
   };
@@ -52,15 +59,25 @@ export default function Home() {
     <>
       <NavBar />
       <SearchBar
+        isLoading={isLoading}
         inputSearch={form.searchInput}
         handleChanges={handleChanges}
         handleSearchButton={handleSearchButton}
       />
-      <div className="w-full h-full p-2 flex flex-row justify-center bg-[#F5F5F5] ">
+      <div className="w-full h-full p-2 flex flex-row justify-center bg-gray-100 ">
         <div className="h-full w-[1020px] flex flex-col  bg-white border-sm">
+          {outputs.length > 0 && (
+            <Pagination
+              page={form.page}
+              totalHits={totalHits}
+              handleChanges={handleChanges}
+              handleSearchButton={handleSearchButton}
+            />
+          )}
+
           <div className="h-full w-full">
-            {articles.length > 0 &&
-              articles.map((article, index) => (
+            {outputs.length > 0 &&
+              outputs.map((article, index) => (
                 <div className="p-4 m-2" key={`${index}_${article.id}`}>
                   <div className="text-green-700">{article.authors}</div>
                   <div>{article.type}</div>
@@ -77,6 +94,15 @@ export default function Home() {
                 </div>
               ))}
           </div>
+
+          {outputs.length > 0 && (
+            <Pagination
+              page={form.page}
+              totalHits={totalHits}
+              handleChanges={handleChanges}
+              handleSearchButton={handleSearchButton}
+            />
+          )}
         </div>
       </div>
     </>
