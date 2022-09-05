@@ -56,7 +56,7 @@ export default function Home() {
         handleChanges={handleChanges}
         handleSearchButton={handleSearchButton}
       />
-      <div className="w-full h-screen p-2 flex flex-row justify-center bg-[#F5F5F5] ">
+      <div className="w-full h-full p-2 flex flex-row justify-center bg-[#F5F5F5] ">
         <div className="h-full w-[1020px] flex flex-col  bg-white border-sm">
           <div className="h-full w-full">
             {articles.length > 0 &&
