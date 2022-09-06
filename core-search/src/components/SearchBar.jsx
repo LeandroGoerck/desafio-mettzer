@@ -17,7 +17,7 @@ export default function SearchBar(props) {
             className="h-full w-full rounded-sm pl-1 border"
           />
           <button
-            className="h-12 w-12 flex flex-row justify-center items-center rounded-sm bg-[#B7540A]"
+            className="h-12 w-12 flex flex-row justify-center items-center rounded-sm bg-[#76E8AB]"
             type="submit"
             onClick={(e) => handleSearchButton(e)}>
             {isLoading ? (

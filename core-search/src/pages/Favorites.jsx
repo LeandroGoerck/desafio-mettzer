@@ -3,14 +3,12 @@ import React, { useEffect, useState } from "react";
 
 import NavBar from "../components/NavBar";
 import Pagination from "../components/Pagination";
-import api from "../helpers/request";
 
 export default function Favorites() {
   const [outputs, setOutputs] = useState([]);
   const [totalHits, setTotalHits] = useState(0);
   const [favoriteIds, setFavoriteIds] = useState([]);
   const [form, setFormValue] = useState({
-    searchInput: "",
     page: 1,
     totalPages: 1,
   });
@@ -24,52 +22,27 @@ export default function Favorites() {
     }));
   };
 
-  const handleSearchButton = (e) => {
-    e.preventDefault();
-    api
-      .get(
-        `/search/${form.searchInput}?page=${form.page}&pageSize=10&apiKey=${process.env.REACT_APP_API_KEY}`
-      )
-      .then((data) => {
-        setTotalHits(data.data.totalHits);
-        setOutputs(
-          data.data.data.map((data) => {
-            if (data.description !== null) {
-              return {
-                id: data._id,
-                authors: data._source.authors,
-                type: data._type,
-                description: data._source.description,
-                title: data._source.title,
-                urls: data._source.urls,
-              };
-            } else {
-              return false;
-            }
-          })
-        );
-      });
-  };
+  const handleSearchButton = (e) => {};
 
   useEffect(() => {
-    if (form.page <= 0) {
-      setFormValue((prevState) => ({
-        ...prevState,
-        page: 1,
-      }));
-    }
+    buildFavoriteList();
   }, [form.page]);
 
-  useEffect(() => {
-    buildFavoriteIdList();
-  }, [])
-  
-
   const handlePaginationButton = (calc) => {
+
+    let nextPage = form.page + calc;
+
+    if (nextPage > form.totalPages) {
+      nextPage = form.totalPages;
+    } else if (nextPage < 1) {
+      nextPage = 1;
+    }
+
     setFormValue((prevState) => ({
       ...prevState,
-      page: +prevState.page + calc,
+      page: nextPage,
     }));
+
   };
 
   const handleFavoriteButton = (document) => {
@@ -82,15 +55,28 @@ export default function Favorites() {
       localStorage.setItem(key, value);
     }
 
-    buildFavoriteIdList();
+    buildFavoriteList();
   };
 
-  const buildFavoriteIdList = () => {
+  const buildFavoriteList = () => {
     const list = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      list.push(localStorage.key(i));
+    const fullList = [];
+    for (
+      let i = (form.page - 1) * 10;
+      i < localStorage.length && i < form.page * 10;
+      i++
+    ) {
+      list.push(JSON.parse(localStorage.getItem(localStorage.key(i)))[0]);
     }
-    setFavoriteIds(list);
+    for (let i = 0; i < localStorage.length; i++) {
+      fullList.push(localStorage.getItem(localStorage.key(i)));
+    }
+    setOutputs(list);
+    setTotalHits(fullList.length);
+    setFormValue((prevState) => ({
+      ...prevState,
+      totalPages: Math.ceil(fullList.length / 10),
+    }));
   };
 
   return (
@@ -102,6 +88,7 @@ export default function Favorites() {
             <Pagination
               page={form.page}
               totalHits={totalHits}
+              totalPages={form.totalPages}
               handleChanges={handleChanges}
               handleSearchButton={handleSearchButton}
               handlePaginationButton={handlePaginationButton}
@@ -119,19 +106,11 @@ export default function Favorites() {
                     onClick={() =>
                       handleFavoriteButton({ [output.id]: output })
                     }>
-                    {favoriteIds.includes(output.id) ? (
-                      <Star
-                        className="absolute right-0 top-0 m-2 text-yellow-300"
-                        size={22}
-                        weight="fill"
-                      />
-                    ) : (
-                      <Star
-                        className="absolute right-0 top-0 m-2"
-                        size={22}
-                        weight="thin"
-                      />
-                    )}
+                    <Star
+                      className="absolute right-0 top-0 m-2 text-yellow-300"
+                      size={22}
+                      weight="fill"
+                    />
                   </button>
                   <div className="text-green-700">
                     {`${output.authors}`.substring(0, 100) + "..."}

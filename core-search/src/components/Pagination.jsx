@@ -7,7 +7,14 @@ import {
 import React from "react";
 
 export default function Pagination(props) {
-  const { page, totalHits, handleSearchButton, handleChanges, handlePaginationButton } = props;
+  const {
+    page,
+    totalHits,
+    handleSearchButton,
+    handleChanges,
+    handlePaginationButton,
+    totalPages,
+  } = props;
 
   return (
     <div className="h-14 w-full bg-white border-2 flex flex-row justify-center items-center">
@@ -15,15 +22,13 @@ export default function Pagination(props) {
       <button
         className="mx-2"
         type="button"
-        onClick={() => handlePaginationButton(-100)}
-      >
+        onClick={() => handlePaginationButton(-100)}>
         <CaretDoubleLeft size={32} weight="bold" />
       </button>
       <button
         className="mx-2"
         type="button"
-        onClick={() => handlePaginationButton(-1)}
-      >
+        onClick={() => handlePaginationButton(-1)}>
         <CaretLeft size={32} weight="bold" />
       </button>
       <span className="mx-2">página</span>
@@ -36,19 +41,17 @@ export default function Pagination(props) {
           onChange={handleChanges}></input>
       </form>
       <span className="mx-2">de</span>
-      <span className="mx-2">{totalHits}</span>
+      <span className="mx-2">{totalPages}</span>
       <button
         className="mx-2"
         type="button"
-        onClick={() => handlePaginationButton(+1)}
-      >
+        onClick={() => handlePaginationButton(+1)}>
         <CaretRight size={32} weight="bold" />
       </button>
       <button
         className="mx-2"
         type="button"
-        onClick={() => handlePaginationButton(+100)}
-      >
+        onClick={() => handlePaginationButton(+100)}>
         <CaretDoubleRight size={32} weight="bold" />
       </button>
     </div>
