@@ -8,7 +8,7 @@ import React from "react";
 
 export default function Pagination(props) {
   const {
-    page,
+    currentPage,
     totalHits,
     handleSearchButton,
     handleChanges,
@@ -36,8 +36,8 @@ export default function Pagination(props) {
         <input
           className="h-10 w-10 mx-2 border-2 rounded-md"
           type="text"
-          name="page"
-          value={page}
+          name="currentPage"
+          value={currentPage}
           onChange={handleChanges}></input>
       </form>
       <span className="mx-2">de</span>

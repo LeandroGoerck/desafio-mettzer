@@ -110,8 +110,9 @@ export default function Home() {
         <div className="h-full w-[1020px] flex flex-col  bg-white border-sm">
           {outputs.length > 0 && (
             <Pagination
-              page={form.page}
+              currentPage={form.page}
               totalHits={totalHits}
+              totalPages={form.totalPages}
               handleChanges={handleChanges}
               handleSearchButton={handleSearchButton}
               handlePaginationButton={handlePaginationButton}
@@ -163,8 +164,9 @@ export default function Home() {
 
           {outputs.length > 0 && (
             <Pagination
-              page={form.page}
+              currentPage={form.page}
               totalHits={totalHits}
+              totalPages={form.totalPages}
               handleChanges={handleChanges}
               handleSearchButton={handleSearchButton}
               handlePaginationButton={handlePaginationButton}

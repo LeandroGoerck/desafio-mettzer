@@ -6,17 +6,17 @@ import Pagination from "../components/Pagination";
 
 export default function Favorites() {
   const [outputs, setOutputs] = useState([]);
-  const [totalHits, setTotalHits] = useState(0);
-  const [favoriteIds, setFavoriteIds] = useState([]);
-  const [form, setFormValue] = useState({
-    page: 1,
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
     totalPages: 1,
+    totalHits: 1,
+    pageSize: 10,
   });
 
   const handleChanges = (e) => {
     let { name, value } = e.target;
 
-    setFormValue((prevState) => ({
+    setPagination((prevState) => ({
       ...prevState,
       [name]: value,
     }));
@@ -26,23 +26,21 @@ export default function Favorites() {
 
   useEffect(() => {
     buildFavoriteList();
-  }, [form.page]);
+  }, [pagination.currentPage]);
 
   const handlePaginationButton = (calc) => {
+    let nextPage = pagination.currentPage + calc;
 
-    let nextPage = form.page + calc;
-
-    if (nextPage > form.totalPages) {
-      nextPage = form.totalPages;
+    if (nextPage > pagination.totalPages) {
+      nextPage = pagination.totalPages;
     } else if (nextPage < 1) {
       nextPage = 1;
     }
 
-    setFormValue((prevState) => ({
+    setPagination((prevState) => ({
       ...prevState,
-      page: nextPage,
+      currentPage: nextPage,
     }));
-
   };
 
   const handleFavoriteButton = (document) => {
@@ -62,8 +60,8 @@ export default function Favorites() {
     const list = [];
     const fullList = [];
     for (
-      let i = (form.page - 1) * 10;
-      i < localStorage.length && i < form.page * 10;
+      let i = (pagination.currentPage - 1) * 10;
+      i < localStorage.length && i < pagination.currentPage * 10;
       i++
     ) {
       list.push(JSON.parse(localStorage.getItem(localStorage.key(i)))[0]);
@@ -72,10 +70,10 @@ export default function Favorites() {
       fullList.push(localStorage.getItem(localStorage.key(i)));
     }
     setOutputs(list);
-    setTotalHits(fullList.length);
-    setFormValue((prevState) => ({
+    setPagination((prevState) => ({
       ...prevState,
-      totalPages: Math.ceil(fullList.length / 10),
+      totalPages: Math.ceil(fullList.length / pagination.pageSize),
+      totalHits: fullList.length,
     }));
   };
 
@@ -86,9 +84,9 @@ export default function Favorites() {
         <div className="h-full w-[1020px] flex flex-col  bg-white border-sm">
           {outputs.length > 0 && (
             <Pagination
-              page={form.page}
-              totalHits={totalHits}
-              totalPages={form.totalPages}
+              currentPage={pagination.currentPage}
+              totalHits={pagination.totalHits}
+              totalPages={pagination.totalPages}
               handleChanges={handleChanges}
               handleSearchButton={handleSearchButton}
               handlePaginationButton={handlePaginationButton}
@@ -132,8 +130,9 @@ export default function Favorites() {
 
           {outputs.length > 0 && (
             <Pagination
-              page={form.page}
-              totalHits={totalHits}
+              currentPage={pagination.currentPage}
+              totalHits={pagination.totalHits}
+              totalPages={pagination.totalPages}
               handleChanges={handleChanges}
               handleSearchButton={handleSearchButton}
               handlePaginationButton={handlePaginationButton}
