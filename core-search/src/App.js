@@ -1,8 +1,11 @@
 import "./App.css";
-import Home from "./pages/Home";
+import React from 'react';
+import RoutesApp from './routes';
 
 function App() {
-  return <Home />;
+  return (
+    <RoutesApp />
+  );
 }
 
 export default App;
