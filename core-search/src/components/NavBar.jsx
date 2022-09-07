@@ -8,7 +8,7 @@ export default function NavBar() {
       <div className="h-16 w-fit">
         <Link className="flex flex-row" to="/home">
           <img
-            className="h-16 w-60 pl-8"
+            className="h-16 pl-2"
             src="/logo_mettzer.png"
             alt="mettzer logo"></img>
           <img
@@ -23,7 +23,7 @@ export default function NavBar() {
           <div className="h-fit text-xl p-5 hidden md:block">PESQUISA</div>
         </Link>
         <Link to="/favorites">
-          <Star className="inline-block  md:hidden mx-4" size={32} />
+          <Star className="inline-block md:hidden mx-4" size={32} />
           <div className="h-fit text-xl p-5 hidden md:block">FAVORITOS</div>
         </Link>
       </div>

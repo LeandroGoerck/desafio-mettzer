@@ -16,6 +16,7 @@ export default function Home() {
     page: 1,
     totalPages: 1,
   });
+  
 
   const handleChanges = (e) => {
     let { name, value } = e.target;
@@ -98,7 +99,7 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="max-w-5xl mx-auto">
       <NavBar />
       <SearchBar
         isLoading={isLoading}
@@ -174,6 +175,6 @@ export default function Home() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

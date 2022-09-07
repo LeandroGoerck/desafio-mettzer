@@ -78,7 +78,7 @@ export default function Favorites() {
   };
 
   return (
-    <>
+    <div className="max-w-5xl mx-auto">
       <NavBar />
       <div className="w-full h-full p-2 flex flex-row justify-center bg-gray-100 ">
         <div className="h-full w-[1020px] flex flex-col  bg-white border-sm">
@@ -140,6 +140,6 @@ export default function Favorites() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

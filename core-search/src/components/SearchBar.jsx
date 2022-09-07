@@ -4,8 +4,8 @@ import { MagnifyingGlass, SpinnerGap } from "phosphor-react";
 export default function SearchBar(props) {
   const { isLoading, searchInput, handleChanges, handleSearchButton } = props;
   return (
-    <div className="h-20 w-full flex flex-row p-4">
-      <div className="h-full w-full flex flex-col justify-center bg-[#F5F5F5]">
+    <div className="h-20 w-full flex flex-row p-4 bg-[#F5F5F5]">
+      <div className="h-full w-full flex flex-col justify-center ">
         <form className="h-full flex flex-row justify-center">
           <input
             title="O que você está buscando?"
