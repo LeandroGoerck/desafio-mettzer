@@ -8,6 +8,7 @@ export default function SearchBar(props) {
       <div className="h-full w-full flex flex-col justify-center ">
         <form className="h-full flex flex-row justify-center">
           <input
+            data-testid="searchInput"
             title="O que você está buscando?"
             type="text"
             name="searchInput"
@@ -17,6 +18,7 @@ export default function SearchBar(props) {
             className="h-full w-full rounded-sm pl-1 border"
           />
           <button
+            data-testid="searchButton"
             className="h-12 w-12 flex flex-row justify-center items-center rounded-sm bg-[#76E8AB]"
             type="submit"
             onClick={(e) => handleSearchButton(e)}>
