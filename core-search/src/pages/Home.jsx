@@ -16,7 +16,6 @@ export default function Home() {
     page: 1,
     totalPages: 1,
   });
-  
 
   const handleChanges = (e) => {
     let { name, value } = e.target;
@@ -35,21 +34,18 @@ export default function Home() {
         `/search/${form.searchInput}?page=${form.page}&pageSize=10&apiKey=${process.env.REACT_APP_API_KEY}`
       )
       .then((data) => {
+        console.log(data);
         setTotalHits(data.data.totalHits);
         setOutputs(
           data.data.data.map((data) => {
-            if (data.description !== null) {
-              return {
-                id: data._id,
-                authors: data._source.authors,
-                type: data._type,
-                description: data._source.description,
-                title: data._source.title,
-                urls: data._source.urls,
-              };
-            } else {
-              return false;
-            }
+            return {
+              id: data._id,
+              type: data._type,
+              authors: data._source.authors,
+              description: data._source.description,
+              title: data._source.title,
+              urls: data._source.urls,
+            };
           })
         );
         setIsLoading(false);
@@ -67,8 +63,7 @@ export default function Home() {
 
   useEffect(() => {
     buildFavoriteIdList();
-  }, [])
-  
+  }, []);
 
   const handlePaginationButton = (calc) => {
     setFormValue((prevState) => ({
@@ -145,11 +140,17 @@ export default function Home() {
                       />
                     )}
                   </button>
-                  <div className="text-green-700">
+                  <div
+                    data-testid={`authors-${index}`}
+                    className="text-green-700">
                     {`${output.authors}`.substring(0, 100) + "..."}
                   </div>
-                  <div>{output.type}</div>
-                  <div className="text-[#B7540A] my-2">{output.title}</div>
+                  <div
+                    data-testid={`type-${index}`}
+                  >{output.type}</div>
+                  <div
+                    data-testid={`title-${index}`}
+                    className="text-[#B7540A] my-2">{output.title}</div>
                   <div>{`${output.description}`.substring(0, 200) + "..."}</div>
                   <a
                     className="text-blue-700 my-2 h-20 w-40"
