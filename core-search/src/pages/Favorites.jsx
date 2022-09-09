@@ -110,11 +110,17 @@ export default function Favorites() {
                       weight="fill"
                     />
                   </button>
-                  <div className="text-green-700">
+                  <div
+                    data-testid={`authors-${index}`}
+                    className="text-green-700">
                     {`${output.authors}`.substring(0, 100) + "..."}
                   </div>
-                  <div>{output.type}</div>
-                  <div className="text-[#B7540A] my-2">{output.title}</div>
+                  <div data-testid={`type-${index}`}>{output.type}</div>
+                  <div
+                    data-testid={`title-${index}`}
+                    className="text-[#B7540A] my-2">
+                    {output.title}
+                  </div>
                   <div>{`${output.description}`.substring(0, 200) + "..."}</div>
                   <a
                     className="text-blue-700 my-2 h-20 w-40"

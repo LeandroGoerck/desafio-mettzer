@@ -34,7 +34,6 @@ export default function Home() {
         `/search/${form.searchInput}?page=${form.page}&pageSize=10&apiKey=${process.env.REACT_APP_API_KEY}`
       )
       .then((data) => {
-        console.log(data);
         setTotalHits(data.data.totalHits);
         setOutputs(
           data.data.data.map((data) => {
